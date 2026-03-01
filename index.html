@@ -134,6 +134,8 @@ async function loadWorks(order) {
 
     const birth = entity.claims.P569?.[0]?.mainsnak?.datavalue?.value?.time;
     const birthYear = birth ? parseInt(birth.substring(1,5)) : null;
+    const death = entity.claims.P570?.[0]?.mainsnak?.datavalue?.value?.time;
+const deathYear = death ? parseInt(death.substring(1,5)) : null;
 
     const creatorLabel = entity.labels.en?.value || name;
 
@@ -220,7 +222,15 @@ async function loadWorks(order) {
       if (!items.length) return "";
       let html = `<h3>${title}</h3><ul>`;
       items.forEach(w => {
-        const age = birthYear ? w.year - birthYear : "";
+        let age = "";
+
+if (birthYear) {
+  if (deathYear && w.year > deathYear) {
+    age = "posthumous";
+  } else {
+    age = w.year - birthYear;
+  }
+}
         const titleHTML = w.link
           ? `<a href="${w.link}" target="_blank">${w.title}</a>`
           : w.title;
