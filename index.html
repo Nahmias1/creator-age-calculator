@@ -261,7 +261,10 @@ if (birthYear) {
     console.error(error);
   }
 }
-
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("sw.js");
+}
+  
 </script>
 
 </body>
